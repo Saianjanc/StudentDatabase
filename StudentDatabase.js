@@ -5,7 +5,7 @@ let studentDetails = [{
     class: 6,
     gender: "Female",
     test_score: []
-},
+}
 {
     roll_no: 102,
     name: "Ethan Johnson",
