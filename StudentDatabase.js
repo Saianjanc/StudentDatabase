@@ -191,6 +191,8 @@ function takeTest() {
             ele.test_score.push({sub_name:"physics",marks:random()})
             ele.test_score.push({sub_name:"chemistry",marks:random()})
             ele.test_score.push({sub_name:"maths",marks:random()})
+            ele.Total=ele.test_score[0].marks+ele.test_score[1].marks+ele.test_score[2].marks
+            ele.Percentage = Math.round((ele.Total/300)*100)
         }
         else{flag=false}
     })
