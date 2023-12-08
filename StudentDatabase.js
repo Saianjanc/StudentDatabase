@@ -198,6 +198,12 @@ function takeTest() {
     else{console.log("\nStudents Have Already Taken Test!");}
 }
 
+const class5 = studentDetails.filter(obj => {return obj.Class == 5});
+const class6 = studentDetails.filter(obj => {return obj.Class == 6});
+const class7 = studentDetails.filter(obj => {return obj.Class == 7});
+const class8 = studentDetails.filter(obj => {return obj.Class == 8});
+const class9 = studentDetails.filter(obj => {return obj.Class == 9});
+
 function viewResult() {
     let flag = true
     if (!studentDetails[0].test_score.length) {
@@ -217,9 +223,7 @@ function viewResult() {
         ele.Total = ele.test_score[0].marks+ele.test_score[1].marks+ele.test_score[2].marks
         ele.Percentage = Math.round((ele.Total/300)*100)}})
     }
-    if (flag){
-        console.table(studentDetails,["Roll_no","Name","Class","Gender","Total","Percentage"])
-    }
+    if (flag){console.table(studentDetails,["Roll_no","Name","Class","Gender","Total","Percentage"])}
 }
 
 function viewStudentsResult(roll_No) {
@@ -235,6 +239,24 @@ function viewStudentsResult(roll_No) {
     }
 }
 
+function viewClasswiseResult() {
+    let flag = true
+    studentDetails[0].Total==null ? flag=false:flag=true
+    if(flag){
+    console.log("\nClass 5:");
+    console.table(class5,["Roll_no","Name","Class","Gender","Total","Percentage"])
+    console.log("\nClass 6:");
+    console.table(class6,["Roll_no","Name","Class","Gender","Total","Percentage"])
+    console.log("\nClass 7:");
+    console.table(class7,["Roll_no","Name","Class","Gender","Total","Percentage"])
+    console.log("\nClass 8:");
+    console.table(class8,["Roll_no","Name","Class","Gender","Total","Percentage"])
+    console.log("\nClass 9:");
+    console.table(class9,["Roll_no","Name","Class","Gender","Total","Percentage"])
+    }
+    else{console.log("\nThe Students Have Not Given Test!");}
+}
+
 let ch = -1
 while (ch!=0) {
     ch=readline.questionInt(`\nDisplay menu :-
@@ -242,6 +264,7 @@ Enter:
     1) Take Test
     2) View Result
     3) View Students Result 
+    4) View Classwise Result
     0) Exit\n`)
     switch (ch) {
         case 1:
@@ -254,8 +277,11 @@ Enter:
             let roll_No=readline.questionInt("Enter Student Roll No: ")
             let flag = true
             studentDetails.forEach((ele)=>{if(ele.Roll_no==roll_No){flag=false}})
-        if(flag){console.log("\nInvaild Roll No!");}
-            viewStudentsResult(roll_No)
+            if(flag){console.log("\nInvaild Roll No!");}
+            else{viewStudentsResult(roll_No)}
+            break;
+        case 4:
+            viewClasswiseResult()
             break;
         default:
             break;
