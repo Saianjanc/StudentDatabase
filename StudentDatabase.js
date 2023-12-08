@@ -257,7 +257,4 @@ Enter:
         if(flag){console.log("\nInvaild Roll No!");}
             viewStudentsResult(roll_No)
             break;
-        default:
-            break;
-    }
-}
+        
