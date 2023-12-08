@@ -198,12 +198,6 @@ function takeTest() {
     else{console.log("\nStudents Have Already Taken Test!");}
 }
 
-const class5 = studentDetails.filter(obj => {return obj.Class == 5});
-const class6 = studentDetails.filter(obj => {return obj.Class == 6});
-const class7 = studentDetails.filter(obj => {return obj.Class == 7});
-const class8 = studentDetails.filter(obj => {return obj.Class == 8});
-const class9 = studentDetails.filter(obj => {return obj.Class == 9});
-
 function viewResult() {
     let flag = true
     if (!studentDetails[0].test_score.length) {
