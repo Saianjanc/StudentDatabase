@@ -146,35 +146,35 @@ let studentDetails = [
         test_score: []
     },
     {
-        Roll_no: 801,
+        Roll_no: 901,
         Name: "Evelyn Scott",
         Class: 9,
         Gender: "Female",
         test_score: []
     },
     {
-        Roll_no: 802,
+        Roll_no: 902,
         Name: "Logan King",
         Class: 9,
         Gender: "Male",
         test_score: []
     },
     {
-        Roll_no: 803,
+        Roll_no: 903,
         Name: "Harper Turner",
         Class: 9,
         Gender: "Female",
         test_score: []
     },
     {
-        Roll_no: 804,
+        Roll_no: 904,
         Name: "Jackson Lee",
         Class: 9,
         Gender: "Male",
         test_score: []
     },
     {
-        Roll_no: 805,
+        Roll_no: 905,
         Name: "Abigail Baker",
         Class: 9,
         Gender: "Female",
@@ -189,7 +189,7 @@ const class9 = studentDetails.filter(obj => { return obj.Class == 9 });
 let classes = []
 
 function random() {
-        return Math.floor(Math.random() * (95 - 30)+25)
+        return Math.floor(Math.random() * (90 - 30)+25)
 }
 
 function takeTest() {
@@ -210,15 +210,10 @@ function takeTest() {
 }
 
 function viewResult() {
-    let flag = true
-    if (!checkTest) {
-        let input = readline.questionInt("The Students Have Not Taken Test\n Do you Want to Take Test?\n1:Yes\n2:No\n")
-        if (input == 1) {
-            takeTest()
-        }
-        else { flag = false }
-    }
-    if (flag) { console.table(studentDetails, ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"]) }
+    if (checkTest) {console.table(studentDetails, ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"]) }
+    else {let input = readline.questionInt("Students Have Not Taken Test\nDo you Want them to Take Test?\n1:Yes\n2:No\n")
+    if (input == 1) {takeTest()}
+  }
 }
 
 function viewStudentsResult(roll_No) {
@@ -228,11 +223,17 @@ function viewStudentsResult(roll_No) {
         else {
             console.log("\nStudent Result Not Found Calculating Result!");
             stdObj.Total = stdObj.test_score[0].marks + stdObj.test_score[1].marks + stdObj.test_score[2].marks
-            stdObj.Percentage = Math.round((ele.Total / 300)*100)
+            stdObj.Percentage = Math.round((stdObj.Total / 300)*100)
             console.log(`\nRoll No: ${stdObj.Roll_no} Name: ${stdObj.Name} Class: ${stdObj.Class} Total Marks: ${stdObj.Total} Percentage: ${stdObj.Percentage}`);
         }
     } else {
-        console.log("\nThe Student Has not Taken the Test!!");
+        let input = readline.questionInt("The Student Has Not Taken Test\nDo you Want the student to Take Test?\n1:Yes\n2:No\n")
+        if (input == 1) {
+            stdObj.test_score.push({ sub_name: "physics", marks: random() })
+            stdObj.test_score.push({ sub_name: "chemistry", marks: random() })
+            stdObj.test_score.push({ sub_name: "maths", marks: random() })
+            viewStudentsResult(roll_No)
+        }
     }
 }
 
@@ -253,15 +254,15 @@ function viewClasswiseResult() {
 }
 
 function computeGrade(obj) {
-    if (obj >= 90 && obj <= 100) {
+    if (obj >= 90) {
         return 'A+';
-    } else if (obj >= 80 && obj < 90) {
+    } else if (obj >= 80) {
         return 'A';
-    } else if (obj >= 70 && obj < 80) {
+    } else if (obj >= 70) {
         return 'B';
-    } else if (obj >= 60 && obj < 70) {
+    } else if (obj >= 60) {
         return 'C';
-    } else if (obj>=35 && obj <60){
+    } else if (obj >= 35){
         return 'D';
     } else {
         return 'F';
@@ -326,7 +327,10 @@ function detailAnalysis() {
         classes[4].Grade = computeGrade(classes[4].ClassPct)
         console.table(classes)
     } else {
-        console.log("\nStudents Have Not Taken the Test!");
+        let input = readline.questionInt("Students Have Not Taken Test\nDo you Want them to Take Test?\n1:Yes\n2:No\n")
+        if (input == 1) {
+            takeTest()
+        }
     }
 }
 
@@ -359,6 +363,9 @@ Enter:
             break;
         case 5:
             detailAnalysis()
+            break;
+        case 0:
+            console.log("\n Congratulations to All Passed Students!\n");
             break;
         default:
             console.log("\nInvalid Input!");
