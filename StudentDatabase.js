@@ -253,20 +253,9 @@ function viewClasswiseResult() {
     else { console.log("\nThe Students Have Not Given Test!"); }
 }
 
-function computeGrade(obj) {
-    if (obj >= 90) {
-        return 'A+';
-    } else if (obj >= 80) {
-        return 'A';
-    } else if (obj >= 70) {
-        return 'B';
-    } else if (obj >= 60) {
-        return 'C';
-    } else if (obj >= 35){
-        return 'D';
-    } else {
-        return 'F';
-    }
+function computeGrade(classpct) {
+    let grade=classpct>=80 ?  'A' :  classpct>=55 && classpct<=80 ?  'B' : classpct>=35 && classpct<=55 ?  'C' :  'D'
+    return grade
 }
 
 function detailAnalysis() {
@@ -276,60 +265,31 @@ function detailAnalysis() {
     classes[3] = { Class: 8, TotalStd: 5, ClassAvg: 0, ClassPct: 0, Grade:"", PassedStd: 0, PassPct: 0, FailedStd: 0, FailPct:0 }
     classes[4] = { Class: 9, TotalStd: 5,ClassAvg: 0, ClassPct: 0, Grade:"", PassedStd: 0, PassPct: 0, FailedStd: 0, FailPct:0 }
     if (checkTest) {
-        class5.forEach((ele) => {
-        classes[0].ClassAvg += ele.Total
-        if (ele.Percentage < 40) { classes[0].FailedStd+=1 } else { classes[0].PassedStd+=1 }
-        })
-        classes[0].ClassAvg = classes[0].ClassAvg/5
-        classes[0].PassPct = (classes[0].PassedStd / 5) * 100
-        classes[0].FailPct = (classes[0].FailedStd / 5) * 100
-        classes[0].ClassPct = Math.round((classes[0].ClassAvg/300)*100)
-        classes[0].Grade = computeGrade(classes[0].ClassPct)
+        classes[0].ClassAvg=class5.reduce((sum,ele)=>sum+ele.Total,0)
+        classes[1].ClassAvg=class6.reduce((sum,ele)=>sum+ele.Total,0)
+        classes[2].ClassAvg=class7.reduce((sum,ele)=>sum+ele.Total,0)
+        classes[3].ClassAvg=class8.reduce((sum,ele)=>sum+ele.Total,0)
+        classes[4].ClassAvg=class9.reduce((sum,ele)=>sum+ele.Total,0)
+
+        class5.forEach(ele=>{if (ele.Percentage < 40) { classes[0].FailedStd+=1 } else { classes[0].PassedStd+=1 }})
+        class6.forEach(ele=>{if (ele.Percentage < 40) { classes[1].FailedStd+=1 } else { classes[1].PassedStd+=1 }})
+        class7.forEach(ele=>{if (ele.Percentage < 40) { classes[2].FailedStd+=1 } else { classes[2].PassedStd+=1 }})
+        class8.forEach(ele=>{if (ele.Percentage < 40) { classes[3].FailedStd+=1 } else { classes[3].PassedStd+=1 }})
+        class9.forEach(ele=>{if (ele.Percentage < 40) { classes[4].FailedStd+=1 } else { classes[4].PassedStd+=1 }})
         
-        class6.forEach((ele) => {
-        classes[1].ClassAvg += ele.Total
-        if (ele.Percentage < 40) { classes[1].FailedStd+=1 } else { classes[1].PassedStd+=1 }
-        })
-        classes[1].ClassAvg = classes[1].ClassAvg/5
-        classes[1].PassPct = (classes[1].PassedStd / 5) * 100
-        classes[1].FailPct = (classes[1].FailedStd / 5) * 100
-        classes[1].ClassPct = Math.round((classes[1].ClassAvg/300)*100)
-        classes[1].Grade = computeGrade(classes[1].ClassPct)
-
-        class7.forEach((ele) => {
-        classes[2].ClassAvg += ele.Total
-        if (ele.Percentage < 40) { classes[2].FailedStd+=1 } else { classes[2].PassedStd+=1 }
-        })
-        classes[2].ClassAvg = classes[2].ClassAvg/5
-        classes[2].PassPct = (classes[2].PassedStd / 5) * 100
-        classes[2].FailPct = (classes[2].FailedStd / 5) * 100
-        classes[2].ClassPct = Math.round((classes[2].ClassAvg/300)*100)
-        classes[2].Grade = computeGrade(classes[2].ClassPct)
-
-        class8.forEach((ele) => {
-        classes[3].ClassAvg += ele.Total
-        if (ele.Percentage < 40) { classes[3].FailedStd+=1 } else { classes[3].PassedStd+=1 }
-        })
-        classes[3].ClassAvg = classes[3].ClassAvg/5
-        classes[3].PassPct = (classes[3].PassedStd / 5) * 100
-        classes[3].FailPct = (classes[3].FailedStd / 5) * 100
-        classes[3].ClassPct = Math.round((classes[3].ClassAvg/300)*100)
-        classes[3].Grade = computeGrade(classes[3].ClassPct)
-
-        class9.forEach((ele) => {
-        classes[4].ClassAvg += ele.Total
-        if (ele.Percentage < 40) { classes[4].FailedStd+=1 } else { classes[4].PassedStd+=1 }
-        })
-        classes[4].ClassAvg = classes[4].ClassAvg/5
-        classes[4].PassPct = (classes[4].PassedStd / 5) * 100
-        classes[4].FailPct = (classes[4].FailedStd / 5) * 100
-        classes[4].ClassPct = Math.round((classes[4].ClassAvg/300)*100)
-        classes[4].Grade = computeGrade(classes[4].ClassPct)
+        for (let i=0;i<5;i++){
+        classes[i].ClassAvg = classes[i].ClassAvg/5
+        classes[i].PassPct = (classes[i].PassedStd / 5) * 100
+        classes[i].FailPct = (classes[i].FailedStd / 5) * 100
+        classes[i].ClassPct = Math.round((classes[i].ClassAvg/300)*100)
+        classes[i].Grade = computeGrade(classes[i].ClassPct)
+        }
         console.table(classes)
     } else {
         let input = readline.questionInt("Students Have Not Taken Test\nDo you Want them to Take Test?\n1:Yes\n2:No\n")
         if (input == 1) {
             takeTest()
+            detailAnalysis()
         }
     }
 }
