@@ -187,9 +187,10 @@ const class7 = studentDetails.filter(obj => { return obj.Class == 7 });
 const class8 = studentDetails.filter(obj => { return obj.Class == 8 });
 const class9 = studentDetails.filter(obj => { return obj.Class == 9 });
 let classes = []
+let topers = []
 
 function random() {
-        return Math.floor(Math.random() * (90 - 30)+25)
+        return Math.floor(Math.random()*(100-10)+18)
 }
 
 function takeTest() {
@@ -202,6 +203,7 @@ function takeTest() {
             ele.Total = ele.test_score[0].marks + ele.test_score[1].marks + ele.test_score[2].marks
             ele.Percentage = Math.round((ele.Total / 300)*100)
             checkTest = true
+            flag=true
         }
         else { flag = false }
     })
@@ -212,7 +214,8 @@ function takeTest() {
 function viewResult() {
     if (checkTest) {console.table(studentDetails, ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"]) }
     else {let input = readline.questionInt("Students Have Not Taken Test\nDo you Want them to Take Test?\n1:Yes\n2:No\n")
-    if (input == 1) {takeTest()}
+    if (input == 1) {takeTest()
+        viewResult()}
   }
 }
 
@@ -294,6 +297,32 @@ function detailAnalysis() {
     }
 }
 
+function viewPerformers(){
+    if (checkTest) {
+    topers[0]=class5.sort((a, b) => b.Total - a.Total).slice(0, 3);
+    topers[1]=class6.sort((a, b) => b.Total - a.Total).slice(0, 3);
+    topers[2]=class7.sort((a, b) => b.Total - a.Total).slice(0, 3);
+    topers[3]=class8.sort((a, b) => b.Total - a.Total).slice(0, 3);
+    topers[4]=class9.sort((a, b) => b.Total - a.Total).slice(0, 3);
+    console.log("\nClass 5:");
+    console.table(topers[0], ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
+    console.log("\nClass 6:");
+    console.table(topers[1], ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
+    console.log("\nClass 7:");
+    console.table(topers[2], ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
+    console.log("\nClass 8:");
+    console.table(topers[3], ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
+    console.log("\nClass 9:");
+    console.table(topers[4], ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
+   }else{
+    let input = readline.questionInt("Students Have Not Taken Test\nDo you Want them to Take Test?\n1:Yes\n2:No\n")
+        if (input == 1) {
+            takeTest()
+            viewPerformers()
+        }
+   }
+}
+
 let ch = -1
 while (ch != 0) {
     ch = readline.questionInt(`\nDisplay menu :-
@@ -303,6 +332,7 @@ Enter:
     3) View Students Result 
     4) View Classwise Result
     5) Detail Analysis of Result
+    6) View Top Performers
     0) Exit\n`)
     switch (ch) {
         case 1:
@@ -323,6 +353,9 @@ Enter:
             break;
         case 5:
             detailAnalysis()
+            break;
+        case 6:
+            viewPerformers()
             break;
         case 0:
             console.log("\n Congratulations to All Passed Students!\n");
