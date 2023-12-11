@@ -320,11 +320,9 @@ function viewPerformers(){
         for (const i in classList) {
             let j=classList[i]
             topers[i]=separatedByClass[j].sort((a, b) => b.Total - a.Total).slice(0, 3);
+            console.log(`\nClass ${classList[i]}:`);
+            console.table(topers[i], ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
         }
-    for (const i in classList){    
-    console.log(`\nClass ${classList[i]}:`);
-    console.table(topers[i], ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
-    }
    }else{
     let input = readline.questionInt("Students Have Not Taken Test\nDo you Want them to Take Test?\n1:Yes\n2:No\n")
         if (input == 1) {
