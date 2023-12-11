@@ -5,6 +5,37 @@ console.log("Welcome To Student DataBase!");
 let checkTest = false
 
 let studentDetails = [
+    {Roll_no: 301,
+        Name: "Liam Garcia",
+        Class: 3,
+        Gender: "Male",
+        test_score: []},
+    {Roll_no: 302,
+        Name: "Liam Garcia",
+        Class: 3,
+        Gender: "Male",
+        test_score: []},
+    {
+        Roll_no: 303,
+        Name: "Liam Garcia",
+        Class: 3,
+        Gender: "Male",
+        test_score: []
+    },
+    {
+        Roll_no: 401,
+        Name: "Liam Garcia",
+        Class: 4,
+        Gender: "Male",
+        test_score: []
+    },
+    {
+        Roll_no: 402,
+        Name: "Liam Garcia",
+        Class: 4,
+        Gender: "Male",
+        test_score: []
+    },
     {
         Roll_no: 501,
         Name: "Liam Garcia",
@@ -181,11 +212,16 @@ let studentDetails = [
         test_score: []
     }
 ]
-const class5 = studentDetails.filter(obj => { return obj.Class == 5 });
-const class6 = studentDetails.filter(obj => { return obj.Class == 6 });
-const class7 = studentDetails.filter(obj => { return obj.Class == 7 });
-const class8 = studentDetails.filter(obj => { return obj.Class == 8 });
-const class9 = studentDetails.filter(obj => { return obj.Class == 9 });
+const classList = [...new Set(studentDetails.map((ele)=>ele.Class))]
+const separatedByClass = {};
+studentDetails.forEach(student => {
+    if (!separatedByClass[student.Class]) {
+      separatedByClass[student.Class] = [];
+    }
+
+    separatedByClass[student.Class].push(student);
+  });
+// classList.forEach(ele=>classno.push({classid:ele,students:studentDetails.filter(obj => { return obj.Class == ele})}))
 let classes = []
 let topers = []
 
@@ -242,16 +278,11 @@ function viewStudentsResult(roll_No) {
 
 function viewClasswiseResult() {
     if (checkTest) {
-        console.log("\nClass 5:");
-        console.table(class5, ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
-        console.log("\nClass 6:");
-        console.table(class6, ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
-        console.log("\nClass 7:");
-        console.table(class7, ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
-        console.log("\nClass 8:");
-        console.table(class8, ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
-        console.log("\nClass 9:");
-        console.table(class9, ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
+        for (const i in classList) {
+            let j=classList[i]
+            console.log(`\nClass ${j}:`);
+            console.table(separatedByClass[j], ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
+            }
     }
     else { console.log("\nThe Students Have Not Given Test!"); }
 }
@@ -262,31 +293,18 @@ function computeGrade(classpct) {
 }
 
 function detailAnalysis() {
-    classes[0] = { Class: 5, TotalStd: 5, ClassAvg: 0, ClassPct: 0, Grade:"", PassedStd: 0, PassPct: 0, FailedStd: 0, FailPct:0 }
-    classes[1] = { Class: 6, TotalStd: 5, ClassAvg: 0, ClassPct: 0, Grade:"", PassedStd: 0, PassPct: 0, FailedStd: 0, FailPct:0 }
-    classes[2] = { Class: 7, TotalStd: 5, ClassAvg: 0, ClassPct: 0, Grade:"", PassedStd: 0, PassPct: 0, FailedStd: 0, FailPct:0 }
-    classes[3] = { Class: 8, TotalStd: 5, ClassAvg: 0, ClassPct: 0, Grade:"", PassedStd: 0, PassPct: 0, FailedStd: 0, FailPct:0 }
-    classes[4] = { Class: 9, TotalStd: 5,ClassAvg: 0, ClassPct: 0, Grade:"", PassedStd: 0, PassPct: 0, FailedStd: 0, FailPct:0 }
     if (checkTest) {
-        classes[0].ClassAvg=class5.reduce((sum,ele)=>sum+ele.Total,0)
-        classes[1].ClassAvg=class6.reduce((sum,ele)=>sum+ele.Total,0)
-        classes[2].ClassAvg=class7.reduce((sum,ele)=>sum+ele.Total,0)
-        classes[3].ClassAvg=class8.reduce((sum,ele)=>sum+ele.Total,0)
-        classes[4].ClassAvg=class9.reduce((sum,ele)=>sum+ele.Total,0)
-
-        class5.forEach(ele=>{if (ele.Percentage < 40) { classes[0].FailedStd+=1 } else { classes[0].PassedStd+=1 }})
-        class6.forEach(ele=>{if (ele.Percentage < 40) { classes[1].FailedStd+=1 } else { classes[1].PassedStd+=1 }})
-        class7.forEach(ele=>{if (ele.Percentage < 40) { classes[2].FailedStd+=1 } else { classes[2].PassedStd+=1 }})
-        class8.forEach(ele=>{if (ele.Percentage < 40) { classes[3].FailedStd+=1 } else { classes[3].PassedStd+=1 }})
-        class9.forEach(ele=>{if (ele.Percentage < 40) { classes[4].FailedStd+=1 } else { classes[4].PassedStd+=1 }})
-        
-        for (let i=0;i<5;i++){
-        classes[i].ClassAvg = classes[i].ClassAvg/5
-        classes[i].PassPct = (classes[i].PassedStd / 5) * 100
-        classes[i].FailPct = (classes[i].FailedStd / 5) * 100
-        classes[i].ClassPct = Math.round((classes[i].ClassAvg/300)*100)
-        classes[i].Grade = computeGrade(classes[i].ClassPct)
-        }
+        for (const i in classList) {
+            let j=classList[i]
+            classes.push({ Class: separatedByClass[j][0].Class, TotalStd: separatedByClass[j].length, ClassAvg: 0, ClassPct: 0, Grade:"", PassedStd: 0, PassPct: 0, FailedStd: 0, FailPct:0 })
+            classes[i].ClassAvg=separatedByClass[j].reduce((sum,ele)=>sum+ele.Total,0)
+            separatedByClass[j].forEach(ele=>{if (ele.Percentage < 40) { classes[i].FailedStd+=1 } else { classes[i].PassedStd+=1 }})
+            classes[i].ClassAvg = classes[i].ClassAvg/classes[i].TotalStd
+            classes[i].PassPct = (classes[i].PassedStd / classes[i].TotalStd) * 100
+            classes[i].FailPct = (classes[i].FailedStd / classes[i].TotalStd) * 100
+            classes[i].ClassPct = Math.round((classes[i].ClassAvg/300)*100)
+            classes[i].Grade = computeGrade(classes[i].ClassPct)
+            }
         console.table(classes)
     } else {
         let input = readline.questionInt("Students Have Not Taken Test\nDo you Want them to Take Test?\n1:Yes\n2:No\n")
@@ -299,21 +317,14 @@ function detailAnalysis() {
 
 function viewPerformers(){
     if (checkTest) {
-    topers[0]=class5.sort((a, b) => b.Total - a.Total).slice(0, 3);
-    topers[1]=class6.sort((a, b) => b.Total - a.Total).slice(0, 3);
-    topers[2]=class7.sort((a, b) => b.Total - a.Total).slice(0, 3);
-    topers[3]=class8.sort((a, b) => b.Total - a.Total).slice(0, 3);
-    topers[4]=class9.sort((a, b) => b.Total - a.Total).slice(0, 3);
-    console.log("\nClass 5:");
-    console.table(topers[0], ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
-    console.log("\nClass 6:");
-    console.table(topers[1], ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
-    console.log("\nClass 7:");
-    console.table(topers[2], ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
-    console.log("\nClass 8:");
-    console.table(topers[3], ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
-    console.log("\nClass 9:");
-    console.table(topers[4], ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
+        for (const i in classList) {
+            let j=classList[i]
+            topers[i]=separatedByClass[j].sort((a, b) => b.Total - a.Total).slice(0, 3);
+        }
+    for (const i in classList){    
+    console.log(`\nClass ${classList[i]}:`);
+    console.table(topers[i], ["Roll_no", "Name", "Class", "Gender", "Total", "Percentage"])
+    }
    }else{
     let input = readline.questionInt("Students Have Not Taken Test\nDo you Want them to Take Test?\n1:Yes\n2:No\n")
         if (input == 1) {
